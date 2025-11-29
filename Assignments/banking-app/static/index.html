@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>SecureBank - Online Banking</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, sans-serif;
+        background: linear-gradient(
+          135deg,
+          #1e3c72 0%,
+          #2a5298 50%,
+          #1e3c72 100%
+        );
+        min-height: 100vh;
+        padding: 20px;
+        position: relative;
+      }
+      body::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(
+            circle at 20% 50%,
+            rgba(42, 82, 152, 0.3) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 80% 80%,
+            rgba(30, 60, 114, 0.3) 0%,
+            transparent 50%
+          );
+        pointer-events: none;
+      }
+      .container {
+        max-width: 500px;
+        margin: 40px auto;
+        background: #ffffff;
+        border-radius: 16px;
+        padding: 40px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        position: relative;
+        z-index: 1;
+      }
+      .logo {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+      .logo i {
+        font-size: 48px;
+        color: #1e3c72;
+        margin-bottom: 10px;
+      }
+      h1 {
+        color: #1a1a1a;
+        margin-bottom: 8px;
+        text-align: center;
+        font-size: 28px;
+        font-weight: 600;
+        letter-spacing: -0.5px;
+      }
+      .subtitle {
+        text-align: center;
+        color: #666;
+        font-size: 14px;
+        margin-bottom: 30px;
+      }
+      .section {
+        margin-bottom: 24px;
+      }
+      h2 {
+        color: #1a1a1a;
+        margin-bottom: 20px;
+        font-size: 18px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      h2 i {
+        color: #2a5298;
+        font-size: 20px;
+      }
+      .input-group {
+        position: relative;
+        margin-bottom: 16px;
+      }
+      .input-group i {
+        position: absolute;
+        left: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #999;
+        font-size: 16px;
+      }
+      input {
+        width: 100%;
+        padding: 14px 16px 14px 45px;
+        border: 1.5px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 15px;
+        transition: all 0.3s ease;
+        background: #fafafa;
+      }
+      input:focus {
+        outline: none;
+        border-color: #2a5298;
+        background: #ffffff;
+        box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.1);
+      }
+      input::placeholder {
+        color: #999;
+      }
+      button {
+        width: 100%;
+        padding: 14px;
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        margin-top: 8px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(42, 82, 152, 0.3);
+      }
+      button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(42, 82, 152, 0.4);
+      }
+      button:active {
+        transform: translateY(0);
+      }
+      .result {
+        margin-top: 16px;
+        padding: 14px 16px;
+        border-radius: 8px;
+        display: none;
+        font-size: 14px;
+        line-height: 1.6;
+      }
+      .success {
+        background: #e8f5e9;
+        color: #2e7d32;
+        border-left: 4px solid #4caf50;
+        display: block;
+      }
+      .error {
+        background: #ffebee;
+        color: #c62828;
+        border-left: 4px solid #f44336;
+        display: block;
+      }
+      .hidden {
+        display: none;
+      }
+      .user-info {
+        background: linear-gradient(135deg, #f5f7fa 0%, #e8eef5 100%);
+        padding: 20px;
+        border-radius: 12px;
+        margin-bottom: 24px;
+        border: 1px solid #d0dae8;
+      }
+      .user-info-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+      }
+      .user-name {
+        font-size: 16px;
+        color: #1a1a1a;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .user-name i {
+        color: #2a5298;
+      }
+      .balance-label {
+        font-size: 12px;
+        color: #666;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 4px;
+      }
+      .balance-amount {
+        font-size: 28px;
+        color: #1e3c72;
+        font-weight: 700;
+      }
+      .logout-btn {
+        background: linear-gradient(135deg, #5f6368 0%, #3c4043 100%);
+        margin-top: 24px;
+        box-shadow: 0 4px 12px rgba(95, 99, 104, 0.3);
+      }
+      .logout-btn:hover {
+        background: linear-gradient(135deg, #3c4043 0%, #202124 100%);
+      }
+      .divider {
+        height: 1px;
+        background: #e0e0e0;
+        margin: 24px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="logo">
+        <i class="fas fa-university"></i>
+      </div>
+      <h1>SecureBank</h1>
+      <p class="subtitle">Secure Online Banking Platform</p>
+
+      <!-- Authenticate Section -->
+      <div class="section" id="loginSection">
+        <h2><i class="fas fa-shield-alt"></i> Account Login</h2>
+        <div class="input-group">
+          <i class="fas fa-user"></i>
+          <input type="text" id="authName" placeholder="Account Name" />
+        </div>
+        <div class="input-group">
+          <i class="fas fa-lock"></i>
+          <input type="password" id="authPin" placeholder="PIN Number" />
+        </div>
+        <button onclick="authenticate()">
+          <i class="fas fa-sign-in-alt"></i> Login
+        </button>
+        <div id="authResult" class="result"></div>
+      </div>
+
+      <!-- Bank Transfer Section (Hidden until authenticated) -->
+      <div id="bankingSection" class="hidden">
+        <div class="user-info">
+          <div class="user-info-header">
+            <div class="user-name" id="userName">
+              <i class="fas fa-user-circle"></i>
+              <span></span>
+            </div>
+          </div>
+          <div class="balance-label">Current Balance</div>
+          <div class="balance-amount" id="balanceAmount">$0.00</div>
+        </div>
+
+        <div class="section">
+          <h2><i class="fas fa-exchange-alt"></i> Transfer Funds</h2>
+          <div class="input-group">
+            <i class="fas fa-user"></i>
+            <input
+              type="text"
+              id="recipientName"
+              placeholder="Recipient Account Name"
+            />
+          </div>
+          <div class="input-group">
+            <i class="fas fa-dollar-sign"></i>
+            <input
+              type="number"
+              id="amount"
+              placeholder="Transfer Amount"
+              step="0.01"
+            />
+          </div>
+          <button onclick="bankTransfer()">
+            <i class="fas fa-paper-plane"></i> Transfer Money
+          </button>
+          <div id="transferResult" class="result"></div>
+        </div>
+
+        <div class="divider"></div>
+
+        <button class="logout-btn" onclick="logout()">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </div>
+    </div>
+
+    <script>
+      const API_URL = "http://127.0.0.1:8000";
+      let currentUser = null;
+
+      async function authenticate() {
+        const name = document.getElementById("authName").value;
+        const pin = document.getElementById("authPin").value;
+        const resultDiv = document.getElementById("authResult");
+
+        if (!name || !pin) {
+          resultDiv.className = "result error";
+          resultDiv.innerHTML =
+            '<i class="fas fa-exclamation-circle"></i> Please enter both account name and PIN';
+          return;
+        }
+
+        try {
+          const response = await fetch(`${API_URL}/authenticate`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, pin_number: pin }),
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            currentUser = data;
+            document.getElementById("loginSection").classList.add("hidden");
+            document
+              .getElementById("bankingSection")
+              .classList.remove("hidden");
+
+            document.querySelector("#userName span").textContent = data.name;
+            document.getElementById(
+              "balanceAmount"
+            ).textContent = `$${data.bank_balance.toFixed(2)}`;
+
+            resultDiv.className = "result";
+            resultDiv.style.display = "none";
+          } else {
+            resultDiv.className = "result error";
+            resultDiv.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${data.detail}`;
+          }
+        } catch (error) {
+          resultDiv.className = "result error";
+          resultDiv.innerHTML = `<i class="fas fa-exclamation-circle"></i> Error: ${error.message}`;
+        }
+      }
+
+      async function bankTransfer() {
+        const recipient = document.getElementById("recipientName").value;
+        const amount = parseFloat(document.getElementById("amount").value);
+        const resultDiv = document.getElementById("transferResult");
+
+        if (!recipient || !amount || amount <= 0) {
+          resultDiv.className = "result error";
+          resultDiv.innerHTML =
+            '<i class="fas fa-exclamation-circle"></i> Please enter valid recipient name and amount';
+          return;
+        }
+
+        try {
+          const response = await fetch(`${API_URL}/bank-transfer`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              sender_name: currentUser.name,
+              recipients_name: recipient,
+              amount: amount,
+            }),
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            // Update current user balance
+            currentUser.bank_balance = data.sender_balance;
+            document.getElementById(
+              "balanceAmount"
+            ).textContent = `$${currentUser.bank_balance.toFixed(2)}`;
+
+            resultDiv.className = "result success";
+            resultDiv.innerHTML = `
+              <i class="fas fa-check-circle"></i> <strong>Transfer Successful</strong><br>
+              <div style="margin-top: 8px;">
+                <strong>Amount:</strong> $${data.amount_transferred.toFixed(
+                  2
+                )}<br>
+                <strong>To:</strong> ${data.recipient}<br>
+                <strong>Your Balance:</strong> $${data.sender_balance.toFixed(
+                  2
+                )}<br>
+                <strong>Recipient Balance:</strong> $${data.recipient_balance.toFixed(
+                  2
+                )}
+              </div>
+            `;
+
+            document.getElementById("recipientName").value = "";
+            document.getElementById("amount").value = "";
+          } else {
+            resultDiv.className = "result error";
+            resultDiv.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${data.detail}`;
+          }
+        } catch (error) {
+          resultDiv.className = "result error";
+          resultDiv.innerHTML = `<i class="fas fa-exclamation-circle"></i> Error: ${error.message}`;
+        }
+      }
+
+      function logout() {
+        currentUser = null;
+        document.getElementById("loginSection").classList.remove("hidden");
+        document.getElementById("bankingSection").classList.add("hidden");
+        document.getElementById("authName").value = "";
+        document.getElementById("authPin").value = "";
+        document.getElementById("authResult").style.display = "none";
+        document.getElementById("transferResult").style.display = "none";
+      }
+    </script>
+  </body>
+</html>

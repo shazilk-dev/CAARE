@@ -1,0 +1,7 @@
+learn-low-code-agentic-agentic
+# Ignore all files in the learn-low-code-agentic-agentic directory
+learn-low-code-agentic-agentic/*
+# Except for the .gitignore file itself
+
+!learn-low-code-agentic-agentic/README.md
+
